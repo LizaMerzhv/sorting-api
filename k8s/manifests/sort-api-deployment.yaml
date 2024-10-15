@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sort-api-deployment
+  labels:
+    app: sort-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sort-api
+  template:
+    metadata:
+      labels:
+        app: sort-api
+    spec:
+      containers:
+        - name: sort-api
+          image: sort-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres-service:5432/sort-api"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "admin"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "admin"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sort-api-service
+spec:
+  type: NodePort
+  selector:
+    app: sort-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30007

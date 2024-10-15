@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: sort-api
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:localhost://db:5432/sort-api
+    username: admin
+    password: admin
+
+service:
+  instance:
+      urls: http://localhost:8081
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+response:
+  delay:
+    mean: 500
+  error:
+    probability: 0.01
+
+
+
+

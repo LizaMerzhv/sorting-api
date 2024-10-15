@@ -1,0 +1,2 @@
+ALTER TABLE sorting_logs
+    ADD COLUMN IF NOT EXISTS error_occurred BOOLEAN NOT NULL DEFAULT false;
