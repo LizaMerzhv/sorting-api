@@ -1,43 +1,159 @@
+# Deployment для Service A
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sort-api-deployment
-  labels:
-    app: sort-api
+  name: service-a
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sort-api
+      app: service-a
   template:
     metadata:
       labels:
-        app: sort-api
+        app: service-a
     spec:
       containers:
-        - name: sort-api
-          image: sort-api:latest
+        - name: sort-api-instance1
+          image: elizaveta24/sort-api:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SPRING_APPLICATION_NAME_INSTANCE1
+            - name: SERVICE_INSTANCE_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SERVICE_INSTANCE_URLS_INSTANCE1
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SERVER_PORT_INSTANCE1
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://postgres-service:5432/sort-api"
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SPRING_DATASOURCE_URL_INSTANCE1
             - name: SPRING_DATASOURCE_USERNAME
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: sort-api-secret
+                  key: SPRING_DATASOURCE_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: sort-api-secret
+                  key: SPRING_DATASOURCE_PASSWORD
 
 ---
-apiVersion: v1
-kind: Service
+
+# Deployment для Service B
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: sort-api-service
+  name: service-b
 spec:
-  type: NodePort
+  replicas: 1
   selector:
-    app: sort-api
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30007
+    matchLabels:
+      app: service-b
+  template:
+    metadata:
+      labels:
+        app: service-b
+    spec:
+      containers:
+        - name: sort-api-instance2
+          image: elizaveta24/sort-api:latest
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SPRING_APPLICATION_NAME_INSTANCE2
+            - name: SERVICE_INSTANCE_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SERVICE_INSTANCE_URLS_INSTANCE2
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SERVER_PORT_INSTANCE2
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SPRING_DATASOURCE_URL_INSTANCE2
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sort-api-secret
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sort-api-secret
+                  key: SPRING_DATASOURCE_PASSWORD
+
+---
+
+# Deployment для Service C
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-c
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-c
+  template:
+    metadata:
+      labels:
+        app: service-c
+    spec:
+      containers:
+        - name: sort-api-instance3
+          image: elizaveta24/sort-api:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SPRING_APPLICATION_NAME_INSTANCE3
+            - name: SERVICE_INSTANCE_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SERVICE_INSTANCE_URLS_INSTANCE3
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SERVER_PORT_INSTANCE3
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: sort-api-config
+                  key: SPRING_DATASOURCE_URL_INSTANCE3
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sort-api-secret
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sort-api-secret
+                  key: SPRING_DATASOURCE_PASSWORD

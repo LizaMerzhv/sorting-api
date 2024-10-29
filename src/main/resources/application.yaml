@@ -1,36 +1,30 @@
 spring:
   application:
-    name: sort-api
+    name: ${SPRING_APPLICATION_NAME:sort-api}
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:localhost://db:5432/sort-api
-    username: admin
-    password: admin
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/sort-api}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
 
 service:
   instance:
-      urls: http://localhost:8081
+    urls: ${SERVICE_INSTANCE_URLS:http://localhost:8081}
+
 server:
-  port: 8080
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
+  port: ${SERVER_PORT:8080}
 
 response:
   delay:
-    mean: 500
+    mean: ${RESPONSE_DELAY_MEAN:500}
   error:
-    probability: 0.01
+    probability: ${RESPONSE_ERROR_PROBABILITY:0.01}
 
+springdoc:
+  api-docs:
+    enabled: ${SPRINGDOC_API_DOCS_ENABLED:true}
+  swagger-ui:
+    enabled: ${SPRINGDOC_SWAGGER_UI_ENABLED:true}
 
 
 
